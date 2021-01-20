@@ -6,7 +6,7 @@ Created on Wed Jan 20 14:10:31 2021
 @author: mike
 """
 from datetime import datetime, date
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Union
 from pydantic import BaseModel, Field
 # from hashlib import blake2b
 import orjson
@@ -60,7 +60,7 @@ class Limit(BaseModel):
     period: Period
     units: Units
     limit_boundary: LimitBoundary
-    aggregation_stat: AggregationStat
+    aggregation_stat: Optional[AggregationStat]
 
 
 class ConditionType(str, Enum):
@@ -103,13 +103,18 @@ class Station(BaseModel):
     """
     Contains the station data of a dataset.
     """
-    station_id: str = Field(..., description='station uuid based on the geometry')
+    station_id: str = Field(None, description='station uuid based on the geometry')
     ref: str = Field(..., description='station reference ID given by owner')
     name: Optional[str]
     osm_id: Optional[int]
     geometry: Geometry
-    altitude: float
+    altitude: Optional[float]
     # properties: Dict = Field(None, description='Any additional station specific properties.')
+
+
+class HydroFeature(str, Enum):
+    surface_water = 'surface water'
+    groundwater = 'groundwater'
 
 
 class Activity(BaseModel):
@@ -117,6 +122,8 @@ class Activity(BaseModel):
 
     """
     activity_type: ActivityType
+    hydro_feature: HydroFeature
+    primary_purpose: Optional[str]
     station: List[Station]
     condition: List[Condition]
 
@@ -149,7 +156,6 @@ class Permit(BaseModel):
     excercised: bool
     permitting_authority: str
     permit_type: PermitType
-    primary_industry: Optional[str]
     activity: List[Activity]
     modified_date: datetime = Field(..., description='The modification date of the last edit.')
 
