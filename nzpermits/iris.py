@@ -10,7 +10,7 @@ import orjson
 import copy
 
 ##########################################
-### Functions
+### Functions for managing IRIS data
 
 
 def query_esri_mapserver(base_url, layer_id, out_fields=None, where=None):
