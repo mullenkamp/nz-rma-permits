@@ -8,7 +8,6 @@ Created on Wed Jan 20 14:10:31 2021
 from datetime import datetime, date
 from typing import List, Optional, Union
 from pydantic import BaseModel, Field
-# from hashlib import blake2b
 import orjson
 from enum import Enum
 
@@ -103,13 +102,18 @@ class Station(BaseModel):
     """
     Contains the station data of a dataset.
     """
-    station_id: str = Field(None, description='station uuid based on the geometry')
+    station_id: str = Field(..., description='station uuid based on the geometry')
     ref: str = Field(..., description='station reference ID given by owner')
     name: Optional[str]
     osm_id: Optional[int]
     geometry: Geometry
     altitude: Optional[float]
+    stream_depletion_ratio: Optional[float]
     # properties: Dict = Field(None, description='Any additional station specific properties.')
+
+    class Config:
+        json_loads = orjson.loads
+        json_dumps = orjson_dumps
 
 
 class HydroFeature(str, Enum):
@@ -156,7 +160,7 @@ class Permit(BaseModel):
     excercised: bool
     permitting_authority: str
     permit_type: PermitType
-    activity: List[Activity]
+    activity: Activity
     modified_date: datetime = Field(..., description='The modification date of the last edit.')
 
     class Config:
@@ -164,7 +168,15 @@ class Permit(BaseModel):
         json_dumps = orjson_dumps
 
 
+# class PermitList(BaseModel):
+#     """
 
+#     """
+#     permit_list: List[Permit]
+
+#     class Config:
+#         json_loads = orjson.loads
+#         json_dumps = orjson_dumps
 
 
 
@@ -215,39 +227,3 @@ class Permit(BaseModel):
 #     results_object_key: List[S3ObjectKey]
 #     properties: Dict = Field(None, description='Any additional station specific properties.')
 #     modified_date: datetime = Field(..., description='The modification date of the last edit.')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

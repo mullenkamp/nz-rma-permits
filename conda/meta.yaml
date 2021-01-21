@@ -1,6 +1,6 @@
 {% set name = "nz-rma-permits" %}
-{% set version = "0.0.1" %}
-{% set sha256 = "ff85fde9cd9a26829991377f89b28bfa5400e5487e66113df6873eba2b833b5d" %}
+{% set version = "0.0.2" %}
+{% set sha256 = "dcd19025ee19050a298dad14edc277030b1cf9cccfd4700bbd7b2d0b83713827" %}
 
 # sha256 is the prefered checksum -- you can get it for a file with:
 #  `openssl sha256 <file name>`.
@@ -38,6 +38,7 @@ requirements:
     - python>=3.8
     - gistools
     - pydantic
+    - geojson
 
 test:
   imports:
