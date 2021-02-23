@@ -5,11 +5,8 @@ Created on Wed Jan 20 10:43:15 2021
 
 @author: mike
 """
-import numpy as np
 import pandas as pd
-import requests
 import orjson
-import copy
 from gistools import data_io
 from nzpermits.data_models import Permit, Station
 from nzpermits.utils import assign_station_id, create_geometry
