@@ -18,7 +18,7 @@ from enum import Enum
 
 def orjson_dumps(v, *, default):
     # orjson.dumps returns bytes, to match standard json.dumps we need to decode
-    return orjson.dumps(v, default=default).decode()
+    return orjson.dumps(v, default=default, option=orjson.OPT_INDENT_2).decode()
 
 
 #########################################
@@ -157,7 +157,7 @@ class Permit(BaseModel):
     commencement_date: date
     expiry_date: date
     effective_end_date: Optional[date]
-    excercised: bool
+    exercised: bool
     permitting_authority: str
     permit_type: PermitType
     activity: Activity
@@ -227,3 +227,39 @@ class Permit(BaseModel):
 #     results_object_key: List[S3ObjectKey]
 #     properties: Dict = Field(None, description='Any additional station specific properties.')
 #     modified_date: datetime = Field(..., description='The modification date of the last edit.')
+
+##########################################
+### Export json schema
+
+# with open('/media/nvme1/git/nz-rma-permits/nzpermits/tests/permit_schema.json', 'w') as f:
+#     f.write(Permit.schema_json())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
