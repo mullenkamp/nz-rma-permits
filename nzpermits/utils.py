@@ -36,6 +36,6 @@ def assign_station_id(geometry):
     """
 
     """
-    station_id = blake2b(orjson.dumps(geometry), digest_size=12).hexdigest()
+    station_id = blake2b(orjson.dumps(geometry, option=orjson.OPT_SERIALIZE_NUMPY), digest_size=12).hexdigest()
 
     return station_id

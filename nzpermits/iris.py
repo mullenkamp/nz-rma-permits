@@ -147,15 +147,15 @@ def process_es_permits(stream_depletion_csv):
         if isinstance(prop['AuthEffectiveEndDate'], int):
             permit.update({'effective_end_date': pd.Timestamp(prop['AuthEffectiveEndDate'], unit='ms').ceil('D')})
 
-        ## Assign excercised
+        ## Assign exercised
         if isinstance(prop['AuthorisationExercised'], str):
             excer = prop['AuthorisationExercised'].lower().strip()
             if excer == 'no':
-                permit.update({'excercised': False})
+                permit.update({'exercised': False})
             else:
-                permit.update({'excercised': True})
+                permit.update({'exercised': True})
         else:
-            permit.update({'excercised': True})
+            permit.update({'exercised': True})
 
         ### Make the permit object
         permit1 = Permit(**permit)

@@ -10,7 +10,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 name = 'nz-rma-permits'
 main_package = 'nzpermits'
 # datasets = 'datasets'
-version = '0.0.3'
+version = '0.0.4'
 
 # The below code is for readthedocs. To have sphinx/readthedocs interact with
 # the contained package, readthedocs needs to build the package. But the dependencies
