@@ -102,7 +102,7 @@ def process_es_permits(stream_depletion_csv):
 
         l_s = round(l_s)
 
-        ## Process activity and hydro_feature
+        ## Process activity and feature
         act0 = prop['ActivitySubType'].lower().split('water ')
         act1 = act0[1].split(' ')
 
@@ -115,13 +115,13 @@ def process_es_permits(stream_depletion_csv):
         else:
             act2 = act1[0]
 
-        hydro_feature = act0[0] + 'water'
+        feature = act0[0] + 'water'
 
         ## Assign conditions
         condition = [{'condition_type': 'abstraction limit', 'limit': [{'value': l_s, 'period': 'S', 'units': 'l', 'limit_boundary': 'max'}]}]
 
         ## Assign the Activity
-        activity = {'activity_type': act2, 'hydro_feature': hydro_feature, 'primary_purpose': prop['PrimaryIndustry'], 'station': station, 'condition': condition}
+        activity = {'activity_type': act2, 'feature': feature, 'primary_purpose': prop['PrimaryIndustry'], 'station': station, 'condition': condition}
 
         ## Assign base permit data
         permit = {'permit_id': permit_id,

@@ -116,7 +116,7 @@ class Station(BaseModel):
         json_dumps = orjson_dumps
 
 
-class HydroFeature(str, Enum):
+class Feature(str, Enum):
     surface_water = 'surface water'
     groundwater = 'groundwater'
 
@@ -126,7 +126,7 @@ class Activity(BaseModel):
 
     """
     activity_type: ActivityType
-    hydro_feature: HydroFeature
+    feature: Feature
     primary_purpose: Optional[str]
     station: List[Station]
     condition: List[Condition]

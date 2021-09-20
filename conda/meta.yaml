@@ -1,6 +1,6 @@
 {% set name = "nz-rma-permits" %}
-{% set version = "0.0.4" %}
-{% set sha256 = "f6c73d1806fa9f143117b8fa95658d01e7e39d9351672e1569257f755b4be404" %}
+{% set version = "0.0.6" %}
+{% set sha256 = "d617e8c147df869440e914f17a9b96bf0b82f662861d03f9f45b5dcac2968289" %}
 
 # sha256 is the prefered checksum -- you can get it for a file with:
 #  `openssl sha256 <file name>`.
