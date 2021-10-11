@@ -6,7 +6,6 @@ Created on Thu Jan 21 14:18:45 2021
 @author: mike
 """
 import orjson
-from nzpermits.data_models import Geometry
 from geojson import Point
 from hashlib import blake2b
 
@@ -27,7 +26,7 @@ def create_geometry(coords, geo_type='Point'):
     if not geo1.is_valid:
         raise ValueError('coordinates are not valid')
 
-    geo2 = Geometry(**geo1).dict()
+    geo2 = dict(geo1)
 
     return geo2
 

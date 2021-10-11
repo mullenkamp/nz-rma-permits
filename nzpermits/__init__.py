@@ -1,1 +1,1 @@
-from nzpermits import iris, data_models, utils
+from nzpermits import iris, utils
