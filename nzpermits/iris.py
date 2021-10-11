@@ -82,7 +82,7 @@ def process_es_permits(stream_depletion_csv):
 
             continue
         else:
-            station = [{'station_id': stn_id, 'ref': ref, 'geometry': geo1, 'stream_depletion_ratio': sd_ratio}]
+            station = [Station(**{'station_id': stn_id, 'ref': ref, 'geometry': geo1, 'stream_depletion_ratio': sd_ratio}).dict(exclude_none=True)]
 
         ## Calc liters/sec
         l_s = prop['MaxAuthVolume_litres_sec']
