@@ -17,7 +17,7 @@ from nzpermits.utils import assign_station_id, create_geometry
 ## Environemnt Southland
 
 
-def process_es_permits(stream_depletion_csv):
+def es_process_permits(stream_depletion_csv):
     """
 
     """
@@ -32,8 +32,9 @@ def process_es_permits(stream_depletion_csv):
     ### Load in the stream depletion csv
     sd_df = pd.read_csv(stream_depletion_csv)
     sd_df['ref'] = sd_df['ref'].str.strip()
-    sd_df = sd_df[['ref', 'sd_ratio']].drop_duplicates('ref')
-    sd_df = sd_df[sd_df['sd_ratio'] > 0].copy()
+    # sd_df = sd_df[['ref', 'sd_ratio']].drop_duplicates('ref')
+    sd_df = sd_df.drop_duplicates('ref')
+    # sd_df = sd_df[sd_df['sd_ratio'] > 0].copy()
 
     ### Process data
     run_date = pd.Timestamp.now(tz='utc').round('s').tz_localize(None)
@@ -61,12 +62,13 @@ def process_es_permits(stream_depletion_csv):
         ## get stream depletion ratio
         ref = prop['AbstractionSiteNo'].strip()
 
-        sd_ratio1 = sd_df[sd_df['ref'] == ref]
+        sd_df = sd_df[sd_df['ref'] == ref]
 
-        if sd_ratio1.empty:
-            sd_ratio = None
+        if sd_df.empty:
+            sd_dict = {}
         else:
-            sd_ratio = float(sd_ratio1.iloc[0]['sd_ratio'])
+            # sd_ratio = float(sd_ratio1.iloc[0]['sd_ratio'])
+            sd_dict = sd_df.drop('ref', axis=1).iloc[0].dropna().to_dict()
 
         ## Assign station data
         if permit_id in data2:
@@ -76,13 +78,13 @@ def process_es_permits(stream_depletion_csv):
             if len(check1) > 0:
                 continue
             else:
-                new_station = orjson.loads(Station(**{'station_id': stn_id, 'ref': ref, 'geometry': geo1, 'stream_depletion_ratio': sd_ratio}).json(exclude_none=True))
+                new_station = orjson.loads(Station(**{'station_id': stn_id, 'ref': ref, 'geometry': geo1, 'properties': sd_dict}).json(exclude_none=True))
                 station.extend([new_station])
                 data2[permit_id]['activity'].update({'station': station})
 
             continue
         else:
-            station = [Station(**{'station_id': stn_id, 'ref': ref, 'geometry': geo1, 'stream_depletion_ratio': sd_ratio}).dict(exclude_none=True)]
+            station = [Station(**{'station_id': stn_id, 'ref': ref, 'geometry': geo1, 'properties': sd_dict}).dict(exclude_none=True)]
 
         ## Calc liters/sec
         l_s = prop['MaxAuthVolume_litres_sec']
