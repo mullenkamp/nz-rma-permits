@@ -32,7 +32,6 @@ def es_process_permits(stream_depletion_csv):
     ### Load in the stream depletion csv
     sd_df = pd.read_csv(stream_depletion_csv)
     sd_df['ref'] = sd_df['ref'].str.strip()
-    # sd_df = sd_df[['ref', 'sd_ratio']].drop_duplicates('ref')
     sd_df = sd_df.drop_duplicates('ref')
     # sd_df = sd_df[sd_df['sd_ratio'] > 0].copy()
 
@@ -62,13 +61,13 @@ def es_process_permits(stream_depletion_csv):
         ## get stream depletion ratio
         ref = prop['AbstractionSiteNo'].strip()
 
-        sd_df = sd_df[sd_df['ref'] == ref]
+        sd_df1 = sd_df[sd_df['ref'] == ref]
 
-        if sd_df.empty:
+        if sd_df1.empty:
             sd_dict = {}
         else:
             # sd_ratio = float(sd_ratio1.iloc[0]['sd_ratio'])
-            sd_dict = sd_df.drop('ref', axis=1).iloc[0].dropna().to_dict()
+            sd_dict = sd_df1.drop('ref', axis=1).iloc[0].dropna().to_dict()
 
         ## Assign station data
         if permit_id in data2:
