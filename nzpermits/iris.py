@@ -55,7 +55,7 @@ def es_process_permits(stream_depletion_csv):
         permit_id = prop['IRISID']
 
         ## Create updated geometry
-        geo1 = create_geometry(d['geometry']['coordinates'])
+        geo1 = create_geometry(d['geometry']['coordinates'], as_dict=True)
         stn_id = assign_station_id(geo1)
 
         ## get stream depletion ratio

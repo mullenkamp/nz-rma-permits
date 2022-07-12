@@ -5,36 +5,41 @@ Created on Thu Jan 21 14:18:45 2021
 
 @author: mike
 """
-import orjson
-from geojson import Point
 from hashlib import blake2b
+from shapely import wkt
+from shapely.geometry import shape, mapping, box, Point, Polygon, MultiPoint
 
 ###################################################
 ### Functions
 
 
-def create_geometry(coords, geo_type='Point'):
+def create_geometry(geometry, precision=None, as_dict=False):
     """
 
     """
-    if geo_type == 'Point':
-        coords = [round(coords[0], 5), round(coords[1], 5)]
-        geo1 = Point(coords)
-    else:
-        raise ValueError('geo_type not implemented yet')
+    geo = shape(geometry)
 
-    if not geo1.is_valid:
-        raise ValueError('coordinates are not valid')
+    if isinstance(precision, int):
+        geo = wkt.loads(wkt.dumps(geo, rounding_precision=precision))
 
-    geo2 = dict(geo1)
+    if as_dict:
+        geo = geo.__geo_interface__
 
-    return geo2
+    return geo
 
 
 def assign_station_id(geometry):
     """
-
+    Parameters
+    ----------
+    geometry : shapely geometry class or geojson geometry
     """
-    station_id = blake2b(orjson.dumps(geometry, option=orjson.OPT_SERIALIZE_NUMPY), digest_size=12).hexdigest()
+    if isinstance(geometry, dict):
+        geo = create_geometry(geometry, precision=5)
+    else:
+        geo = wkt.loads(wkt.dumps(geometry, rounding_precision=5))
+
+    station_id = blake2b(geo.wkb, digest_size=12).hexdigest()
 
     return station_id
+
