@@ -6,10 +6,14 @@ Created on Wed Jan 20 10:43:15 2021
 @author: mike
 """
 import pandas as pd
-import orjson
-from gistools import data_io
-from tethys_data_models.permit import Permit, Station
+from .models import Permit, Station
 from nzpermits.utils import assign_station_id, create_geometry
+
+try:
+    from gistools import data_io
+    import_gistools = True
+except ImportError:
+    import_gistools = False
 
 ##########################################
 ### Functions for processing IRIS data
@@ -21,6 +25,9 @@ def es_process_permits(stream_depletion_csv):
     """
 
     """
+    if not import_gistools:
+        raise ImportError('gistools must be installed to use this function.')
+
     ### Parameters
     base_url = 'https://maps.es.govt.nz/server/rest/services/Public/Consents/MapServer/'
 
@@ -43,7 +50,7 @@ def es_process_permits(stream_depletion_csv):
 
     for d in data1['features']:
 
-        ## Make sure the minium amount of data exists, else continue to next
+        ## Make sure the minimum amount of data exists, else continue to next
         if d['geometry'] is None:
             bad_data.extend([d])
             continue
@@ -55,7 +62,7 @@ def es_process_permits(stream_depletion_csv):
         permit_id = prop['IRISID']
 
         ## Create updated geometry
-        geo1 = create_geometry(d['geometry']['coordinates'], as_dict=True)
+        geo1 = create_geometry(d['geometry'], as_dict=True)
         stn_id = assign_station_id(geo1)
 
         ## get stream depletion ratio

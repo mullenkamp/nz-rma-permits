@@ -1,3 +1,2 @@
-gistools
-pydantic
-geojson
+msgspec
+shapely
