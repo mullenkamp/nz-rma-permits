@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "nz-rma-permits"
 dynamic = ["version"]
-description = "Functions to process NZ RMA permiting data"
+description = "Functions to process NZ RMA permit data"
 readme = "README.rst"
 license = "Apache-2.0"
 authors = [
@@ -33,7 +33,7 @@ dependencies = [
     "shapely"
 ]
 
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 [tool.hatch.envs.default]
 python = "3.10"

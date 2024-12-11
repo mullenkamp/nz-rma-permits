@@ -13,14 +13,14 @@ import msgspec
 # from .utils import orjson_dumps
 # from utils import orjson_dumps
 
-from .geojson import Geometry
-# from geojson import Geometry
+from .gjson import Geometry
+# from gjson import Geometry
 
 #########################################
 ### Models
 
 ## Station
-class StationBase(msgspec.Struct):
+class StationBase(msgspec.Struct, omit_defaults=True):
     """
     Contains the base station data.
     """
@@ -64,7 +64,7 @@ class AggregationStat(str, Enum):
     exceeded_17_perc = 'Exceeded no more than 17% of samples'
 
 
-class Limit(msgspec.Struct):
+class Limit(msgspec.Struct, omit_defaults=True):
     """
     The aggregation statistic describes what statistic should be applied on the source data to be assessed against the limit.
     """
@@ -73,8 +73,8 @@ class Limit(msgspec.Struct):
     units: Units
     limit_boundary: LimitBoundary
     aggregation_stat: AggregationStat
-    name: Optional[str]
-    notes: Optional[str]
+    name: Optional[str] = None
+    notes: Optional[str] = None
 
 
 class ConditionType(str, Enum):
@@ -82,13 +82,13 @@ class ConditionType(str, Enum):
     streamflow_limit = 'streamflow limit'
 
 
-class Condition(msgspec.Struct):
+class Condition(msgspec.Struct, omit_defaults=True):
     """
 
     """
     condition_type: ConditionType
-    limit: Optional[List[Limit]]
-    text: Optional[str]
+    limits: List[Limit]
+    text: Optional[str] = None
 
 
 class ActivityType(str, Enum):
@@ -111,7 +111,7 @@ class SdMethod(str, Enum):
     ward_lough_2011 = 'ward_lough_2011'
 
 
-class AquiferProp(msgspec.Struct):
+class AquiferProp(msgspec.Struct, omit_defaults=True):
     """
     stream_depletion_ratio: The stream depletion ratio calculated from the n_days and the method.
     n_days: The number of pumping days assigned to the permit associated with the stream depletion calculation requirements.
@@ -130,24 +130,24 @@ class AquiferProp(msgspec.Struct):
     stream_width: The streambed width (m).
     """
     method: SdMethod
-    stream_depletion_ratio: Optional[float]
-    n_days: Optional[int]
-    sep_distance : Optional[int]
-    pump_aq_trans : Optional[int]
-    pump_aq_s : Optional[float]
-    upper_aq_trans: Optional[int]
-    upper_aq_s : Optional[float]
-    lower_aq_trans: Optional[int]
-    lower_aq_s : Optional[float]
-    aqt_k : Optional[float]
-    aqt_s : Optional[float]
-    aqt_thick : Optional[int]
-    stream_k : Optional[float]
-    stream_thick : Optional[int]
-    stream_width : Optional[int]
+    stream_depletion_ratio: Optional[float] = None
+    n_days: Optional[int] = None
+    sep_distance : Optional[int] = None
+    pump_aq_trans : Optional[int] = None
+    pump_aq_s : Optional[float] = None
+    upper_aq_trans: Optional[int] = None
+    upper_aq_s : Optional[float] = None
+    lower_aq_trans: Optional[int] = None
+    lower_aq_s : Optional[float] = None
+    aqt_k : Optional[float] = None
+    aqt_s : Optional[float] = None
+    aqt_thick : Optional[int] = None
+    stream_k : Optional[float] = None
+    stream_thick : Optional[int] = None
+    stream_width : Optional[int] = None
 
 
-class Station(StationBase):
+class Station(StationBase, omit_defaults=True):
     """
     Contains the station data.
     """
@@ -155,21 +155,21 @@ class Station(StationBase):
 
 
 class Feature(str, Enum):
-    waterways = 'waterways'
+    waterways = 'surface water'
     groundwater = 'groundwater'
     still_waters = 'still waters'
 
 
-class Activity(msgspec.Struct):
+class Activity(msgspec.Struct, omit_defaults=True):
     """
 
     """
     activity_type: ActivityType
     feature: Feature
-    primary_purpose: Optional[str]
-    station: List[Station]
-    condition: List[Condition]
-    notes: Optional[str]
+    stations: List[Station]
+    conditions: Optional[List[Condition]] = None
+    primary_purpose: Optional[str] = None
+    notes: Optional[str] = None
 
 
 class Status(str, Enum):
@@ -187,17 +187,17 @@ class PermitType(str, Enum):
     water_permit = 'water permit'
 
 
-class Permit(msgspec.Struct):
+class Permit(msgspec.Struct, kw_only=True, omit_defaults=True):
     """
 
     """
     permit_id: str
-    parent_permit_id: Optional[str]
+    parent_permit_id: Optional[str] = None
     status: Status
-    status_changed_date: Optional[date]
+    status_changed_date: Optional[date] = None
     commencement_date: date
     expiry_date: date
-    effective_end_date: Optional[date]
+    effective_end_date: Optional[date] = None
     exercised: bool
     permitting_authority: str
     permit_type: PermitType

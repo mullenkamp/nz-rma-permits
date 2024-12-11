@@ -1,3 +1,3 @@
-from nzpermits import iris, utils, models, geojson
+from nzpermits import iris, utils, models, gjson
 
-__version__ = '0.1.0'
+__version__ = '0.1.9'
