@@ -32,74 +32,6 @@ class StationBase(msgspec.Struct, omit_defaults=True):
     properties: Optional[dict] = None
 
 
-class Period(str, Enum):
-    seconds = 'S'
-    hours = 'H'
-    days = 'D'
-    weeks = 'W'
-    months = 'M'
-    years = 'Y'
-    multi_years = 'multiple years'
-
-
-class Units(str, Enum):
-    liters = 'l'
-    cubic_meters = 'm3'
-    mg_l = 'mg/l'
-
-
-class LimitBoundary(str, Enum):
-    min = 'min'
-    max = 'max'
-
-
-class AggregationStat(str, Enum):
-    min = 'min'
-    max = 'max'
-    median = 'median'
-    mean = 'mean'
-    sum = 'sum'
-    perc_95 = '95th percentile'
-    exceeded_8_perc = 'Exceeded no more than 8% of samples'
-    exceeded_17_perc = 'Exceeded no more than 17% of samples'
-
-
-class Limit(msgspec.Struct, omit_defaults=True):
-    """
-    The aggregation statistic describes what statistic should be applied on the source data to be assessed against the limit.
-    """
-    value: Union[int, float]
-    period: Period
-    units: Units
-    limit_boundary: LimitBoundary
-    aggregation_stat: AggregationStat
-    name: Optional[str] = None
-    notes: Optional[str] = None
-
-
-class ConditionType(str, Enum):
-    abstraction_limit = 'abstraction limit'
-    streamflow_limit = 'streamflow limit'
-
-
-class Condition(msgspec.Struct, omit_defaults=True):
-    """
-
-    """
-    condition_type: ConditionType
-    limits: List[Limit]
-    text: Optional[str] = None
-
-
-class ActivityType(str, Enum):
-    consumptive_take_water = 'consumptive take water'
-    non_consumptive_take_water = 'non-consumptive take water'
-    divert_water = 'divert water'
-    dam_water = 'dam water'
-    use_water = 'use water'
-    discharge_water = 'discharge water'
-
-
 class SdMethod(str, Enum):
     """
     The stream depletion method assigned for the permit.
@@ -152,6 +84,75 @@ class Station(StationBase, omit_defaults=True):
     Contains the station data.
     """
     properties: Optional[AquiferProp] = None
+
+
+class Period(str, Enum):
+    seconds = 'S'
+    hours = 'H'
+    days = 'D'
+    weeks = 'W'
+    months = 'M'
+    years = 'Y'
+    multi_years = 'multiple years'
+
+
+class Units(str, Enum):
+    liters = 'l'
+    cubic_meters = 'm3'
+    mg_l = 'mg/l'
+
+
+class LimitBoundary(str, Enum):
+    min = 'min'
+    max = 'max'
+
+
+class AggregationStat(str, Enum):
+    min = 'min'
+    max = 'max'
+    median = 'median'
+    mean = 'mean'
+    sum = 'sum'
+    perc_95 = '95th percentile'
+    exceeded_8_perc = 'Exceeded no more than 8% of samples'
+    exceeded_17_perc = 'Exceeded no more than 17% of samples'
+
+
+class Limit(msgspec.Struct, omit_defaults=True):
+    """
+    The aggregation statistic describes what statistic should be applied on the source data to be assessed against the limit.
+    """
+    value: Union[int, float]
+    period: Period
+    units: Units
+    limit_boundary: LimitBoundary
+    aggregation_stat: AggregationStat
+    name: Optional[str] = None
+    notes: Optional[str] = None
+    station: Optional[Station] = None
+
+
+class ConditionType(str, Enum):
+    abstraction_limit = 'abstraction limit'
+    streamflow_limit = 'streamflow limit'
+
+
+class Condition(msgspec.Struct, omit_defaults=True):
+    """
+
+    """
+    condition_type: ConditionType
+    limits: List[Limit]
+    text: Optional[str] = None
+
+
+class ActivityType(str, Enum):
+    consumptive_take_water = 'consumptive take water'
+    non_consumptive_take_water = 'non-consumptive take water'
+    divert_water = 'divert water'
+    dam_water = 'dam water'
+    use_water = 'use water'
+    discharge_water = 'discharge water'
 
 
 class Feature(str, Enum):
