@@ -129,12 +129,24 @@ class Limit(msgspec.Struct, omit_defaults=True):
     aggregation_stat: AggregationStat
     name: Optional[str] = None
     notes: Optional[str] = None
-    station: Optional[Station] = None
 
 
 class ConditionType(str, Enum):
-    abstraction_limit = 'abstraction limit'
-    streamflow_limit = 'streamflow limit'
+    abstraction = 'abstraction'
+
+
+class ConstraintType(str, Enum):
+    streamflow = 'streamflow'
+
+
+class Constraint(msgspec.Struct, omit_defaults=True):
+    """
+
+    """
+    constraint_type: ConstraintType
+    station: Station
+    limit: Limit
+    text: Optional[str] = None
 
 
 class Condition(msgspec.Struct, omit_defaults=True):
@@ -142,7 +154,8 @@ class Condition(msgspec.Struct, omit_defaults=True):
 
     """
     condition_type: ConditionType
-    limits: List[Limit]
+    limit: Limit
+    constraints: Optional[List[Constraint]] = None
     text: Optional[str] = None
 
 
